@@ -1,0 +1,42 @@
+{
+    "scripts_dir": "/home/alessio/projects/submission_lib/scripts",
+    "output_base_path": "/home/alessio/projects/submission_lib/outputs",
+    "templates": {
+        "blastp": {
+            "job": {
+                "name": "blastp",
+                "command": "blast.sh",
+                "output_file": "blast.o",
+                "error_file": "blast.e",
+                "queue": "local",
+                "cpus_per_task": "6",
+                "email_type": "ALL",
+                "email_address": "",
+                "account": "alessio",
+                "working_dir": "test1234567890"
+            },
+            "params": {
+                "query": {
+                    "flag": "-query",
+                    "value": "/home/alessio/projects/submission_lib/assets/1.fasta"
+                },
+                "db": {
+                    "flag": "-db",
+                    "value": "/mnt/db/rp/rp-seqs-15.fasta"
+                },
+                "out": {
+                    "flag": "-out",
+                    "value": "align.blast"
+                },
+                "num_threads": {
+                    "flag": "-num_threads",
+                    "value": "6"
+                },
+                "format": {
+                    "flag": "-outfmt",
+                    "value": "6"
+                }
+            }
+        }
+    }
+}
