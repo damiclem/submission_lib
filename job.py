@@ -139,6 +139,9 @@ class AbstractJob(ABC):
         """
         self._job.joinFiles = join
 
+    def get_name(self):
+        return self._job.jobName
+
     @abstractmethod
     def use_queue(self, q_name: str):
         raise NotImplementedError

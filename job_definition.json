@@ -1,6 +1,6 @@
 {
-    "scripts_dir": "/home/alessio/projects/submission_lib/scripts",
-    "output_base_path": "/home/alessio/projects/submission_lib/outputs",
+    "scripts_dir": "/home/alessio/projects/submission-lib/scripts",
+    "output_base_path": "/home/alessio/projects/submission-lib/outputs",
     "templates": {
         "blastp": {
             "job": {
@@ -18,23 +18,28 @@
             "params": {
                 "query": {
                     "flag": "-query",
-                    "value": "/home/alessio/projects/submission_lib/assets/1.fasta"
+                    "value": "/home/alessio/projects/submission-lib/assets/1.fasta",
+                    "required": true
                 },
                 "db": {
                     "flag": "-db",
-                    "value": "/mnt/db/rp/rp-seqs-15.fasta"
+                    "value": "/mnt/db/rp/rp-seqs-15.fasta",
+                    "required": true
                 },
                 "out": {
                     "flag": "-out",
-                    "value": "align.blast"
+                    "value": "align.blast",
+                    "required": true
                 },
                 "num_threads": {
                     "flag": "-num_threads",
-                    "value": "6"
+                    "value": "6",
+                    "required": false
                 },
                 "format": {
                     "flag": "-outfmt",
-                    "value": "6"
+                    "value": "6",
+                    "required": false
                 }
             }
         }

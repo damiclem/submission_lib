@@ -1,34 +1,36 @@
 import json
 import logging
-from typing import Dict
+import time
 
 import drmaa as dr
 
 from params import ScriptParam
+from session import Session
 from slurm.job import Job
-from utils import Session, make_token
+from utils import make_token
 
-session = Session()
-
-jobs: Dict[str, str] = dict()
 logger = logging.getLogger(__name__)
 
 
 def start_job(j_params, params, script_dir, out_pth):
+    session = Session()
+    session.start()
     job: Job = Job(script_dir=script_dir, output_base_pth=out_pth, **j_params)
 
     job.args = params
-
+    name = job.get_name()
     j_id = session.runJob(job)
-    # jobs.setdefault(job._job.jobName, j_id)
     logger.info('Your job has been submitted with ID %s', j_id)
 
     logger.info('Cleaning up')
     session.deleteJobTemplate(job)
-    return j_id
+    session.stop()
+    return j_id, name
 
 
 def check_job_status(j_id):
+    session = Session()
+    session.start()
     # Who needs a case statement when you have dictionaries?
     decodestatus = {dr.JobState.UNDETERMINED       : 'process status cannot be determined',
                     dr.JobState.QUEUED_ACTIVE      : 'job is queued and active',
@@ -42,15 +44,19 @@ def check_job_status(j_id):
                     dr.JobState.FAILED             : 'job finished, but failed'}
 
     logger.info("Status for job %s: %s", j_id, decodestatus[session.jobStatus(j_id)])
+    session.stop()
 
 
 if __name__ == '__main__':
-    session.start()
     with open("job_definition.json", 'r') as f:
         data = json.load(f)
 
-    job_template = data["templates"][0]
+    job_template = data["templates"]["blastp"]
     job_template["job"]["working_dir"] = make_token()
-    start_job(job_template["job"], [ScriptParam(k, **v) for k, v in job_template["params"].items()],
-              data["scripts_dir"], data["output_base_path"])
-    session.stop()
+    j_id, j_name = start_job(job_template["job"], [ScriptParam(k, **v) for k, v in job_template["params"].items()],
+                             data["scripts_dir"], data["output_base_path"])
+    print(j_id, j_name)
+    for i in range(5):
+        check_job_status(j_id)
+        session = Session()
+        time.sleep(3)
