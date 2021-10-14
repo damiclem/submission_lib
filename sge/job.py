@@ -1,15 +1,6 @@
 from job import AbstractJob, EmailType
 
 
-class EmailType(EmailType):
-    NONE = "n"
-    BEGIN = "b"
-    END = "e"
-    FAIL = "a"
-    REQUEUE = ""
-    ALL = ""
-
-
 class Job(AbstractJob):
     def use_queue(self, q_name: str):
         if len(q_name) == 0:

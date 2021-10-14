@@ -4,15 +4,6 @@ from job import AbstractJob, ConcurrentArgumentError, EmailType
 from params import ScriptParam
 
 
-class EmailType(EmailType):
-    NONE = "NONE"
-    BEGIN = "BEGIN"
-    END = "END"
-    FAIL = "FAIL"
-    REQUEUE = "REQUEUE"
-    ALL = "ALL"
-
-
 class Job(AbstractJob):
     def __init__(self, name: str, command: str, working_dir: str, output_file: str, error_file: str, script_dir: str,
                  output_base_pth: str, queue: str = "local", nodes: int = 1, n_tasks_per_node: int = 1,
@@ -24,7 +15,6 @@ class Job(AbstractJob):
                          email_address, email_type, account, args)
         self._is_mem_per_cpu = False
         self._is_mem_per_node = False
-
 
     def use_queue(self, q_name: str):
         if len(q_name) == 0:
