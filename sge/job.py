@@ -28,7 +28,7 @@ class Job(AbstractJob):
         self._job.nativeSpecification += " -l mem_free={}".format(mem)
 
     def set_email_type(self, notification_type: EmailType):
-        self._job.nativeSpecification += " --mail-type={}".format(notification_type)
+        self._job.nativeSpecification += " -m={}".format(notification_type)
 
     def set_account(self, a: str):
         self._job.nativeSpecification += " -A {}".format(a)
