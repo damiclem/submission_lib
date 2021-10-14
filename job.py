@@ -12,12 +12,7 @@ logger = logging.getLogger(__name__)
 
 
 class EmailType(Enum):
-    NONE = "NONE"
-    BEGIN = "BEGIN"
-    END = "END"
-    FAIL = "FAIL"
-    REQUEUE = "REQUEUE"
-    ALL = "ALL"
+    pass
 
 
 class ConcurrentArgumentError(Exception):
