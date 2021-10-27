@@ -1,24 +1,27 @@
-import json
 import logging
-import time
 
 import drmaa as dr
 
-from params import ScriptParam
-from session import Session
-from slurm.job import Job
-from utils import make_token
+from .session import Session
+from .slurm.job import Job
+
+logging.basicConfig(level=logging.DEBUG,
+                    filename='logger.log',
+                    filemode='w',
+                    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 
 logger = logging.getLogger(__name__)
 
 
-def start_job(j_params, params, script_dir, out_pth):
+def start_job(working_dir, script_args, script_dir="/home/alessio/projects/submission_ws/scripts",
+              out_pth="/home/alessio/projects/submission_ws/outputs", **kwargs):
     session = Session()
     session.start()
-    job: Job = Job(script_dir=script_dir, output_base_pth=out_pth, **j_params)
+    job: Job = Job(working_dir=working_dir, script_dir=script_dir, output_base_pth=out_pth, **kwargs)
 
-    job.args = params
+    job.args = script_args
     name = job.get_name()
+    logger.info(name)
     j_id = session.runJob(job)
     logger.info('Your job has been submitted with ID %s', j_id)
 
@@ -48,15 +51,4 @@ def check_job_status(j_id):
 
 
 if __name__ == '__main__':
-    with open("job_definition.json", 'r') as f:
-        data = json.load(f)
-
-    job_template = data["templates"]["blastp"]
-    job_template["job"]["working_dir"] = make_token()
-    j_id, j_name = start_job(job_template["job"], [ScriptParam(k, **v) for k, v in job_template["params"].items()],
-                             data["scripts_dir"], data["output_base_path"])
-    print(j_id, j_name)
-    for i in range(5):
-        check_job_status(j_id)
-        session = Session()
-        time.sleep(3)
+    pass

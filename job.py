@@ -6,7 +6,6 @@ from typing import List
 
 import drmaa as dr
 
-from params import ScriptParam
 
 logger = logging.getLogger(__name__)
 
@@ -27,15 +26,15 @@ class ConcurrentArgumentError(Exception):
 
 
 class AbstractJob(ABC):
-    def __init__(self, name: str, command: str, working_dir: str, output_file: str, error_file: str, script_dir: str,
+    def __init__(self, task_name: str, command: str, working_dir: str, stdout_file: str, stderr_file: str, script_dir: str,
                  output_base_pth: str, queue: str = "local", nodes: int = 1, n_tasks_per_node: int = 1,
                  cpus_per_task: int = 1, n_tasks: int = 1, mem_per_node: str = None, mem_per_cpu: str = None,
                  clock_time_limit: str = None, email_address: str = None, email_type: EmailType = EmailType.ALL,
-                 account: str = None, args: List[ScriptParam] = None):
+                 account: str = None, args: List = None, **kwargs):
         """
         Creates a new Job with the option of specifying some parameters for the scheduler
 
-        :param name: The name of the job, different from the job id
+        :param task_name: The name of the job, different from the job id
         :param queue: The queue where to run the job
         :param command: The path to a sh script or directly a command
         """
@@ -48,10 +47,10 @@ class AbstractJob(ABC):
 
         self.tok = ""
         self.set_working_dir(working_dir)
-        self.set_name(name)
+        self.set_name(task_name)
         self.set_command(command)
-        self.set_output_path(output_file)
-        self.set_error_path(error_file)
+        self.set_output_path(stdout_file)
+        self.set_error_path(stderr_file)
         self._queue = queue
         self.use_queue(self._queue)
         self.set_node_count(nodes)
@@ -89,7 +88,7 @@ class AbstractJob(ABC):
         return self._job.args
 
     @args.setter
-    def args(self, args: List[ScriptParam]):
+    def args(self, args: List):
         self._job.args = [" ".join(str(a) for a in args)]
 
     def set_working_dir(self, wd: str):
@@ -107,8 +106,8 @@ class AbstractJob(ABC):
     def set_error_path(self, pth: str):
         self._job.errorPath = ':' + pth
 
-    def set_name(self, name: str):
-        self._job.jobName = name + "-{}".format(self.tok)
+    def set_name(self, task_name: str):
+        self._job.jobName = task_name + "-{}".format(self.tok)
         logger.debug('Creating job template %s', self._job.jobName)
 
     def set_command(self, path: str):

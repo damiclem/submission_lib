@@ -1,12 +1,4 @@
-import logging
 import secrets
-
-logging.basicConfig(level=logging.DEBUG,
-                    filename='logger.log',
-                    filemode='w',
-                    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
-
-logger = logging.getLogger(__name__)
 
 
 def make_token():

@@ -1,4 +1,4 @@
-from job import AbstractJob, EmailType
+from submission_lib.job import AbstractJob, EmailType
 
 
 class Job(AbstractJob):
