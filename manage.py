@@ -31,7 +31,7 @@ def start_job(working_dir, script_args, script_dir="/home/alessio/projects/submi
     return j_id, name
 
 
-def check_job_status(j_id):
+def get_job_status(j_id: str):
     session = Session()
     session.start()
     # Who needs a case statement when you have dictionaries?
@@ -46,8 +46,10 @@ def check_job_status(j_id):
                     dr.JobState.DONE               : 'job finished normally',
                     dr.JobState.FAILED             : 'job finished, but failed'}
 
-    logger.info("Status for job %s: %s", j_id, decodestatus[session.jobStatus(j_id)])
+    status = session.jobStatus(j_id)
+    logger.info("Status for job %s: %s", j_id, decodestatus[status])
     session.stop()
+    return decodestatus[status]
 
 
 if __name__ == '__main__':
