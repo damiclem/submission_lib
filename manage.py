@@ -52,5 +52,12 @@ def get_job_status(j_id: str):
     return decodestatus[status]
 
 
+def terminate_job(j_id):
+    session = Session()
+    session.start()
+    session.terminate_job(str(j_id))
+    session.stop()
+
+
 if __name__ == '__main__':
     pass

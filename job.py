@@ -95,6 +95,7 @@ class AbstractJob(ABC):
         """
         :param wd: The path to the working directory of the job
         """
+        wd = str(wd)
         self.tok = wd
         os.makedirs(os.path.join(self.output_base_pth, wd), exist_ok=True)
         self._job.workingDirectory = os.path.join(self.output_base_pth, wd)
