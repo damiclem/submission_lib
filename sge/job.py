@@ -32,3 +32,6 @@ class Job(AbstractJob):
 
     def set_account(self, a: str):
         self._job.nativeSpecification += " -A {}".format(a)
+
+    def set_dependency(self, dependency):
+        pass
