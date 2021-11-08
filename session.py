@@ -38,9 +38,6 @@ class Session(dr.Session):
         else:
             logger.warning("Session was not open")
 
-    def runJob(self, job):
-        return super().runJob(job.get_instance())
-
     def terminate_job(self, j_id):
         super().control(j_id, dr.JobControlAction.TERMINATE)
 

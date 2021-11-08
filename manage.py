@@ -14,7 +14,8 @@ logger = logging.getLogger(__name__)
 
 
 def start_job(working_dir, script_args, script_dir="/home/alessio/projects/submission_ws/scripts",
-              out_dir="/home/alessio/projects/submission_ws/outputs", **kwargs):
+              out_dir="/home/alessio/projects/submission_ws/outputs", is_array=False, begin_index=1, end_index=1,
+              step_index=1, **kwargs):
     session = Session()
     session.start()
     job: Job = Job(working_dir=working_dir, script_dir=script_dir, output_base_pth=out_dir, **kwargs)
@@ -22,7 +23,13 @@ def start_job(working_dir, script_args, script_dir="/home/alessio/projects/submi
     job.args = script_args
     name = job.get_name()
     logger.info(name)
-    j_id = session.runJob(job)
+
+    if is_array:
+        j_ids = session.runBulkJobs(job.get_instance(), beginIndex=begin_index, endIndex=end_index, step=step_index)
+        j_id = j_ids[0].split('_')[0]
+    else:
+        j_id = session.runJob(job.get_instance())
+
     logger.info('Your job has been submitted with ID %s', j_id)
 
     logger.info('Cleaning up')
