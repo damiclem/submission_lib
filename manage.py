@@ -12,12 +12,13 @@ logging.basicConfig(level=logging.DEBUG,
 
 logger = logging.getLogger(__name__)
 
+session = Session()
+session.start()
+
 
 def start_job(working_dir, script_args, script_dir="/home/alessio/projects/submission_ws/scripts",
               out_dir="/home/alessio/projects/submission_ws/outputs", is_array=False, begin_index=1, end_index=1,
               step_index=1, **kwargs):
-    session = Session()
-    session.start()
     job: Job = Job(working_dir=working_dir, script_dir=script_dir, output_base_pth=out_dir, **kwargs)
 
     job.args = script_args
@@ -34,13 +35,10 @@ def start_job(working_dir, script_args, script_dir="/home/alessio/projects/submi
 
     logger.info('Cleaning up')
     session.deleteJobTemplate(job)
-    session.stop()
     return j_id, name
 
 
 def get_job_status(j_id: str):
-    session = Session()
-    session.start()
     # Who needs a case statement when you have dictionaries?
     decodestatus = {dr.JobState.UNDETERMINED       : 'process status cannot be determined',
                     dr.JobState.QUEUED_ACTIVE      : 'job is queued and active',
@@ -55,15 +53,11 @@ def get_job_status(j_id: str):
 
     status = session.jobStatus(j_id)
     logger.info("Status for job %s: %s", j_id, decodestatus[status])
-    session.stop()
     return decodestatus[status]
 
 
 def terminate_job(j_id):
-    session = Session()
-    session.start()
     session.terminate_job(str(j_id))
-    session.stop()
 
 
 if __name__ == '__main__':

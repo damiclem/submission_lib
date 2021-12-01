@@ -26,8 +26,7 @@ class ConcurrentArgumentError(Exception):
 
 class AbstractJob(ABC):
     def __init__(self, task_name: str, command: str, working_dir: str, stdout_file: str, stderr_file: str,
-                 script_dir: str,
-                 output_base_pth: str, queue: str = "local", nodes: int = 1, n_tasks_per_node: int = 1,
+                 script_dir: str, output_base_pth: str, queue: str = "local", nodes: int = 1, n_tasks_per_node: int = 1,
                  cpus_per_task: int = 1, n_tasks: int = 1, mem_per_node: str = None, mem_per_cpu: str = None,
                  clock_time_limit: str = None, email_address: str = None, email_type: EmailType = EmailType.ALL,
                  account: str = None, dependency: str = None, args: List = None, **kwargs):
