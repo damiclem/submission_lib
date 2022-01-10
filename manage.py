@@ -7,7 +7,7 @@ from .slurm.job import Job
 
 logging.basicConfig(level=logging.DEBUG,
                     filename='logger.log',
-                    filemode='w',
+                    filemode='a',
                     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 
 logger = logging.getLogger(__name__)
@@ -33,7 +33,7 @@ def start_job(working_dir, script_args, script_dir="/home/alessio/projects/submi
 
     logger.info('Your job has been submitted with ID %s', j_id)
 
-    logger.info('Cleaning up')
+    # logger.info('Cleaning up')
     session.deleteJobTemplate(job)
     return j_id, name
 
@@ -52,7 +52,7 @@ def get_job_status(j_id: str):
                     dr.JobState.FAILED             : 'job finished, but failed'}
 
     status = session.jobStatus(j_id)
-    logger.info("Status for job %s: %s", j_id, decodestatus[status])
+    # logger.info("Status for job %s: %s", j_id, decodestatus[status])
     return decodestatus[status]
 
 
