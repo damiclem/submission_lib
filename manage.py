@@ -2,11 +2,12 @@ import logging
 
 import drmaa as dr
 
+from server.settings import SUBMISSION_LOGGER_PTH
 from .session import Session
 from .slurm.job import Job
 
 logging.basicConfig(level=logging.DEBUG,
-                    filename='logger.log',
+                    filename=SUBMISSION_LOGGER_PTH,
                     filemode='a',
                     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 
