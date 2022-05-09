@@ -110,7 +110,6 @@ class AbstractJob(ABC):
 
     def set_name(self, task_name: str):
         self._job.jobName = task_name + "-{}".format(self.tok)
-        logger.debug('Creating job template %s', self._job.jobName)
 
     def set_command(self, path: str):
         """

@@ -26,9 +26,6 @@ class Session(dr.Session):
         if not self.is_running:
             super().initialize()
             self.is_running = True
-            logger.debug("Session opened")
-        else:
-            logger.warning("Session already opened")
 
     def stop(self):
         if self.is_running:

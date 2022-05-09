@@ -24,7 +24,6 @@ def start_job(working_dir, script_args, script_dir="/home/alessio/projects/submi
 
     job.args = script_args
     name = job.get_name()
-    logger.info(name)
 
     if is_array:
         j_ids = session.runBulkJobs(job.get_instance(), beginIndex=begin_index, endIndex=end_index, step=step_index)
@@ -32,7 +31,7 @@ def start_job(working_dir, script_args, script_dir="/home/alessio/projects/submi
     else:
         j_id = session.runJob(job.get_instance())
 
-    logger.info('Your job has been submitted with ID %s', j_id)
+    logger.info('Task %s has been submitted with ID %s', name, j_id)
 
     # logger.info('Cleaning up')
     session.deleteJobTemplate(job)
