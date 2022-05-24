@@ -52,7 +52,7 @@ def get_job_status(j_id: str):
                     dr.JobState.FAILED             : 'job finished, but failed'}
 
     status = session.jobStatus(j_id)
-    # logger.info("Status for job %s: %s", j_id, decodestatus[status])
+    logger.debug("Status for job %s: %s", j_id, decodestatus[status])
     return decodestatus[status]
 
 
