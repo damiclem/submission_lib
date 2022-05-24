@@ -21,17 +21,19 @@ class Session(dr.Session):
     def __init__(self, contactString=None):
         super().__init__(contactString)
         self.is_running = False
+        logger.warning("Session created")
 
     def start(self):
         if not self.is_running:
             super().initialize()
             self.is_running = True
+            logger.info("Session started")
 
     def stop(self):
         if self.is_running:
             super().exit()
             self.is_running = False
-            logger.debug("Session closed")
+            logger.info("Session closed")
         else:
             logger.warning("Session was not open")
 
