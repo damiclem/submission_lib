@@ -2,7 +2,11 @@ import logging
 
 import drmaa as dr
 
+from environs import Env
+
+
 logger = logging.getLogger(__name__)
+env = Env()
 
 
 def singleton(class_):
@@ -21,6 +25,9 @@ class Session(dr.Session):
     def __init__(self, contactString=None):
         super().__init__(contactString)
         self.is_running = False
+        logger.info("DRMAA_LIBRARY_PATH: {}".format(env.str("DRMAA_LIBRARY_PATH", None)))
+        logger.info("SLURM_DRMAA_USE_SLURMDBD: {}".format(env.int("SLURM_DRMAA_USE_SLURMDBD", None)))
+
         logger.warning("Session created")
 
     def start(self):
