@@ -2,14 +2,8 @@ import logging
 
 import drmaa as dr
 
-from server.settings import SUBMISSION_LOGGER_PTH
 from .session import Session
 from .slurm.job import Job
-
-# logging.basicConfig(level=logging.DEBUG,
-#                     filename=SUBMISSION_LOGGER_PTH,
-#                     filemode='a',
-#                     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 
 logger = logging.getLogger(__name__)
 
@@ -20,18 +14,17 @@ session.start()
 def start_job(working_dir, script_args, script_dir="/home/alessio/projects/submission_ws/scripts",
               out_dir="/home/alessio/projects/submission_ws/outputs", is_array=False, begin_index=1, end_index=1,
               step_index=1, **kwargs):
-    job: Job = Job(working_dir=working_dir, script_dir=script_dir, output_base_pth=out_dir, **kwargs)
+    job: Job = Job(working_dir=working_dir, script_dir=script_dir, output_base_pth=out_dir, args=script_args, **kwargs)
 
-    job.args = script_args
     name = job.get_name()
 
     if is_array:
         j_ids = session.runBulkJobs(job.get_instance(), beginIndex=begin_index, endIndex=end_index, step=step_index)
         j_id = j_ids[0].split('_')[0]
+        logger.debug("Array job %s started with id %s", name, j_id)
     else:
         j_id = session.runJob(job.get_instance())
-
-    logger.info('Task %s has been submitted with ID %s', name, j_id)
+        logger.debug("Job %s started with id %s", name, j_id)
 
     # logger.info('Cleaning up')
     session.deleteJobTemplate(job)

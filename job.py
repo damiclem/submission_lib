@@ -90,7 +90,8 @@ class AbstractJob(ABC):
 
     @args.setter
     def args(self, args: List):
-        self._job.args = [" ".join(str(a) for a in args)]
+        logger.debug("Setting args to {}".format(args))
+        self._job.args = args
 
     def set_working_dir(self, wd: str):
         """

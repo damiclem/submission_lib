@@ -25,8 +25,8 @@ class Session(dr.Session):
     def __init__(self, contactString=None):
         super().__init__(contactString)
         self.is_running = False
-        logger.info("DRMAA_LIBRARY_PATH: {}".format(env.str("DRMAA_LIBRARY_PATH", None)))
-        logger.info("SLURM_DRMAA_USE_SLURMDBD: {}".format(env.int("SLURM_DRMAA_USE_SLURMDBD", None)))
+        logger.debug("DRMAA_LIBRARY_PATH: {}".format(env.str("DRMAA_LIBRARY_PATH", None)))
+        logger.debug("SLURM_DRMAA_USE_SLURMDBD: {}".format(env.int("SLURM_DRMAA_USE_SLURMDBD", None)))
 
         logger.warning("Session created")
 
@@ -46,6 +46,7 @@ class Session(dr.Session):
 
     def terminate_job(self, j_id):
         super().control(j_id, dr.JobControlAction.TERMINATE)
+        logger.debug("Job {} should be terminated".format(j_id))
 
     def hold_job(self, j_id):
         super().control(j_id, dr.JobControlAction.HOLD)
