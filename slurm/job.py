@@ -56,4 +56,4 @@ class Job(AbstractJob):
         self._job.nativeSpecification += " --account={}".format(a)
 
     def set_dependency(self, dependency):
-        self._job.nativeSpecification += " --dependency={}".format(dependency)
+        self._job.nativeSpecification += " --dependency=afterok:{}".format(dependency)
