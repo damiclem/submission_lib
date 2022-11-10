@@ -13,11 +13,11 @@ class Job(AbstractJob):
                  cpus_per_task: int = 1, n_tasks: int = 1, mem_per_node: str = None, mem_per_cpu: str = None,
                  clock_time_limit: str = None, email_address: str = None, email_type: EmailType = EmailType.ALL,
                  account: str = None, dependency: str = None, args: List = None, **kwargs):
+        self._is_mem_per_cpu = False
+        self._is_mem_per_node = False
         super().__init__(task_name, command, working_dir, stdout_file, stderr_file, script_dir, output_base_pth, queue,
                          nodes, n_tasks_per_node, cpus_per_task, n_tasks, mem_per_node, mem_per_cpu, clock_time_limit,
                          email_address, email_type, account, dependency, args, **kwargs)
-        self._is_mem_per_cpu = False
-        self._is_mem_per_node = False
 
     def use_queue(self, q_name: str):
         if len(q_name) == 0:
