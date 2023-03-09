@@ -13,7 +13,11 @@ setuptools.setup(
         long_description_content_type="text/markdown",
         url='https://github.com/damiclem/submission_lib/',
         license='MIT',
-        packages=['submission_lib'],
+        packages=[
+            'submission_lib',
+            'submission_lib.slurm',
+            'submission_lib.sge'
+        ],
         package_dir={
             'submission_lib': '.'
         },
