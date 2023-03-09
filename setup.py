@@ -14,5 +14,8 @@ setuptools.setup(
         url='https://github.com/damiclem/submission_lib/',
         license='MIT',
         packages=['submission_lib'],
-        install_requires=['requests', 'drmaa'],
+        package_dir={
+            'submission_lib': '.'
+        },
+        install_requires=['requests', 'drmaa']
 )
