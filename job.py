@@ -50,8 +50,9 @@ class AbstractJob(ABC):
         self.set_command(command)
         self.set_output_path(stdout_file)
         self.set_error_path(stderr_file)
-        self._queue = queue
-        self.use_queue(self._queue)
+        if queue and len(queue) > 0:
+            self._queue = queue
+            self.use_queue(self._queue)
         self.set_node_count(nodes)
         self.set_ntasks_per_node(n_tasks_per_node)
         self.set_cpus_per_task(cpus_per_task)
@@ -100,7 +101,7 @@ class AbstractJob(ABC):
         wd = str(wd)
         self.tok = wd
         os.makedirs(os.path.join(self.output_base_pth, wd), exist_ok=True)
-        self._job.workingDirectory = os.path.join(self.output_base_pth, wd)
+        self._job.workingDirectory = os.path.abspath(os.path.join(self.output_base_pth, wd))
         logger.debug("Setting working directory to %s", self._job.workingDirectory)
 
     def set_output_path(self, pth: str):

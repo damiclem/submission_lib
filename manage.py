@@ -26,7 +26,7 @@ def start_job(working_dir, script_args, script_dir="./scripts",
         j_id = session.runJob(job.get_instance())
         logger.debug("Job %s started with id %s", name, j_id)
 
-    # logger.info('Cleaning up')
+    # logger.info(job._job.remoteCommand)
     session.deleteJobTemplate(job)
     return j_id, name
 
@@ -51,6 +51,10 @@ def get_job_status(j_id: str):
 
 def terminate_job(j_id):
     session.terminate_job(str(j_id))
+
+def wait_job(j_id, timeout=60):
+    job_info = session.wait(str(j_id), timeout=timeout)
+    return job_info
 
 
 if __name__ == '__main__':
